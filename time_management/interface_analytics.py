@@ -1,3 +1,4 @@
+import functools
 import interface_common
 import os
 import textwrap
@@ -13,6 +14,11 @@ class InterfaceAnalytics:
     def __init__(self, notes_facade, tasks_facade):
         self.notes_facade = notes_facade
         self.tasks_facade = tasks_facade
+        self.__menu_map = {
+            "0": interface_common.to_previous_menu,
+            "1": interface_common.clear_screen,
+            "2": functools.partial(interface_common.quit_program, self.notes_facade),
+        }
 
     def prompt_analytics(self):
         banner = os.path.join(os.path.dirname(__file__), "banners/lytics.txt")
@@ -22,15 +28,4 @@ class InterfaceAnalytics:
     def run_menu_loop_analytics(self):
         while True:
             choice = self.prompt_analytics()
-            self.map_choice_to_function(choice)
-
-    def map_choice_to_function(self, choice):
-        if choice == "0":
-            interface_common.to_previous_menu()
-        elif choice == "1":
-            interface_common.clear_screen()
-            pass
-        elif choice == "2":
-            interface_common.quit_program(self.notes_facade)
-        else:
-            print("Choice not recognized.")
+            interface_common.map_choice_to_function(self.__menu_map, choice)

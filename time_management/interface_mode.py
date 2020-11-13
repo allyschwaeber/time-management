@@ -1,3 +1,4 @@
+import functools
 import interface_common
 import interface_time_management
 import interface_maintenance
@@ -31,6 +32,16 @@ class InterfaceMode:
         self.interface_lytics = interface_analytics.InterfaceAnalytics(
             self.notes_facade, self.tasks_facade
         )
+        self.__menu_map = {
+            "1": functools.partial(self.__run_tm, self.interface_tm.run_menu_loop_tm),
+            "2": functools.partial(
+                self.__run_analytics, self.interface_lytics.run_menu_loop_analytics
+            ),
+            "3": functools.partial(
+                self.__run_maint, self.interface_maint.run_menu_loop_maintenance
+            ),
+            "4": functools.partial(interface_common.quit_program, self.notes_facade),
+        }
 
     def prompt_mode(self):
         interface_common.initialize_menu(self.run_menu_loop_mode, True)
@@ -38,26 +49,19 @@ class InterfaceMode:
         interface_common.print_ascii_banner(interface_common.parse_ascii_banner(banner))
         return input(textwrap.dedent(InterfaceMode.__menu))
 
-    def map_choice_to_function(self, choice):
-        if choice == "1":
-            interface_common.initialize_menu(self.interface_tm.run_menu_loop_tm)
-            self.interface_tm.run_menu_loop_tm()
-        elif choice == "2":
-            interface_common.initialize_menu(
-                self.interface_lytics.run_menu_loop_analytics
-            )
-            self.interface_lytics.run_menu_loop_analytics()
-        elif choice == "3":
-            interface_common.initialize_menu(
-                self.interface_maint.run_menu_loop_maintenance
-            )
-            self.interface_maint.run_menu_loop_maintenance()
-        elif choice == "4":
-            interface_common.quit_program(self.notes_facade)
-        else:
-            print("Choice not recognized.")
+    def __run_tm(self, run_menu_loop_tm):
+        interface_common.initialize_menu(run_menu_loop_tm)
+        self.interface_tm.run_menu_loop_tm()
+
+    def __run_analytics(self, run_menu_loop_analytics):
+        interface_common.initialize_menu(run_menu_loop_analytics)
+        self.interface_lytics.run_menu_loop_analytics()
+
+    def __run_maint(self, run_menu_loop_maint):
+        interface_common.initialize_menu(run_menu_loop_maint)
+        self.interface_maint.run_menu_loop_maintenance()
 
     def run_menu_loop_mode(self):
         while True:
             choice = self.prompt_mode()
-            self.map_choice_to_function(choice)
+            interface_common.map_choice_to_function(self.__menu_map, choice)
