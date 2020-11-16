@@ -3,6 +3,7 @@ import interface_common
 import interface_time_management
 import interface_maintenance
 import interface_analytics
+import interface_study
 import facade_notes
 import facade_tasks
 import os
@@ -16,13 +17,15 @@ class InterfaceMode:
         1: Time management
         2: Analytics
         3: Maintenance
-        4: Quit
+        4: Study
+        5: Quit
         """
 
     def __init__(self, db):
         self.data_def = ddl.DataDefinitionLanguage(db)
         self.notes_facade = facade_notes.NotesFacade(db)
         self.tasks_facade = facade_tasks.TasksFacade(db)
+
         self.interface_tm = interface_time_management.InterfaceTM(
             self.notes_facade, self.tasks_facade, dml.DataManipulationLanguage(db)
         )
@@ -32,6 +35,8 @@ class InterfaceMode:
         self.interface_lytics = interface_analytics.InterfaceAnalytics(
             self.notes_facade, self.tasks_facade
         )
+        self.interface_study = interface_study.InterfaceStudy(self.notes_facade)
+
         self.__menu_map = {
             "1": functools.partial(self.__run_tm, self.interface_tm.run_menu_loop_tm),
             "2": functools.partial(
@@ -40,7 +45,10 @@ class InterfaceMode:
             "3": functools.partial(
                 self.__run_maint, self.interface_maint.run_menu_loop_maintenance
             ),
-            "4": functools.partial(interface_common.quit_program, self.notes_facade),
+            "4": functools.partial(
+                self.__run_study, self.interface_study.run_menu_loop_study
+            ),
+            "5": functools.partial(interface_common.quit_program, self.notes_facade),
         }
 
     def prompt_mode(self):
@@ -60,6 +68,10 @@ class InterfaceMode:
     def __run_maint(self, run_menu_loop_maint):
         interface_common.initialize_menu(run_menu_loop_maint)
         self.interface_maint.run_menu_loop_maintenance()
+
+    def __run_study(self, run_menu_loop_study):
+        interface_common.initialize_menu(run_menu_loop_study)
+        self.interface_study.run_menu_loop_study()
 
     def run_menu_loop_mode(self):
         while True:
