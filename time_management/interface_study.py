@@ -6,6 +6,7 @@ import threading
 import ddl
 import speech_cadence_emulator
 import time
+import random
 
 
 class InterfaceStudy:
@@ -21,6 +22,7 @@ class InterfaceStudy:
             "1": functools.partial(interface_common.quit_program, self.notes_facade),
         }
 
+    # TODO :: KILL THREAD ON KEY INPUT
     def prompt_study(self):
         threading.Timer(2.5, self.print_glossary).start()
         banner = os.path.join(os.path.dirname(__file__), "banners/study.txt")
@@ -33,10 +35,10 @@ class InterfaceStudy:
             interface_common.map_choice_to_function(self.__menu_map, choice)
 
     def print_glossary(self):
-        # TODO :: RANDOMLY SHUFFLE ARRAY
         glossary = ddl.DataDefinitionLanguage.parse_json(
             os.path.join(os.path.dirname(__file__), "knowledge_base/glossary.json")
         )
+        random.shuffle(glossary)
         for entry in glossary:
             for term, definition in entry.items():
                 speech_cadence_emulator.emulate_speech_cadence("\n\n" + term + ":")
