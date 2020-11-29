@@ -4,5 +4,15 @@
     },
     {
         "Just-in-time compilation": "In computing, just-in-time (JIT) compilation (also dynamic translation or run-time compilations) is a way of executing computer code that involves compilation during execution of a program – at run time – rather than before execution. Most often, this consists of source code or more commonly bytecode translation to machine code, which is then executed directly. A system implementing a JIT compiler typically continuously analyses the code being executed and identifies parts of the code where the speedup gained from compilation or recompilation would outweigh the overhead of compiling that code."
+    },
+    {
+        "Encapsulation": "In software design, encapsulation is the general principle of information hiding. Encapsulated structures only reveal the minimum amount of information needed to use them, and hide the rest."
+    },
+    {
+        "Object state": "In object oriented programming, object state refers to particular parts of information the object represents at a given moment. In other words, the states of object are the instances (variables) inside the object that contains the data."
+    },
+    {
+        "Exception handling": "Java allows methods to indicate when they cannot complete normally through an exception handling mechanism. In Java, exceptions are objects of a type that is a subtype of Throwable. Exception handling allows the control flow of executing code to jump to a point in code where the exception can be handled."
     }
+
 ]
