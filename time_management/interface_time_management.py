@@ -65,7 +65,14 @@ class InterfaceTM:
             self.run_menu_loop_tm()
         else:
             days_to_complete = input("Set number of days to complete: ")
-            self.tasks_facade.insert_task(note, days_to_complete)
+            try:
+                float(days_to_complete)
+                self.tasks_facade.insert_task(note, days_to_complete)
+            except ValueError:
+                print("You need to enter a valid number of days!")
+                print("Press any key to continue...", end="")
+                input()
+                self.__set_a_task()
             interface_common.clear_screen()
 
     def __print_notes(self):
@@ -103,17 +110,11 @@ class InterfaceTM:
         elif InterfaceTM.are_valid_tasks(task_ids, self.tasks_facade.get_ids()):
             for task_id in task_ids:
                 if self.tasks_facade.check_if_not_completed(task_id):
-                    task = self.dml.arbitrary_select(
-                        "task", "tasks", f"id = {task_id}"
-                    )[0][0]
+                    task = self.dml.arbitrary_select("task", "tasks", f"id = {task_id}")[0][0]
                     self.tasks_facade.complete_task(task_id)
-                    self.notes_facade.insert_note(
-                        "Completed Task " + task_id + ": " + task
-                    )
+                    self.notes_facade.insert_note("Completed Task " + task_id + ": " + task)
                 else:
-                    print(
-                        f"You have already completed this task with task id - {task_id}"
-                    )
+                    print(f"You have already completed this task with task id - {task_id}")
                     print("please wait !!")
                     time.sleep(3)
                     self.__complete_task(False)
