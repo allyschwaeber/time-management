@@ -60,6 +60,13 @@ class TasksFacade(facade_abc.AbcFacade):
         )
         self.db.get_connection().commit()
 
+    def void_task(self, row_id):
+        now = kronos.get_date_time_as_string()
+        self.db.get_cursor().execute(
+            f"UPDATE {self.table_name} SET is_void = 'true', date_complete = '{now}' WHERE id = {row_id}"
+        )
+        self.db.get_connection().commit()
+
     def get_overdue_tasks(self):
         rows = []
         for row in self.get_rows():
@@ -94,6 +101,18 @@ class TasksFacade(facade_abc.AbcFacade):
         cursor = self.db.get_cursor()
         cursor.execute(
             f"SELECT is_complete from {self.table_name} WHERE id = {task_id}"
+        )
+        record = cursor.fetchall()
+        is_complete = record[0][0]
+
+        if is_complete == "true":
+            return 0
+        else:
+            return 1
+    def check_if_not_voided(self, task_id):
+        cursor = self.db.get_cursor()
+        cursor.execute(
+            f"SELECT is_void from {self.table_name} WHERE id = {task_id}"
         )
         record = cursor.fetchall()
         is_complete = record[0][0]

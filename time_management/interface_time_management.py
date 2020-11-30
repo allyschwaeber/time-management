@@ -14,9 +14,10 @@ class InterfaceTM:
         3: Print notes
         4: Print tasks
         5: Complete tasks
-        6: Print overdue
-        7: Print SCRUM notes
-        8: Quit
+        6: Void tasks
+        7: Print overdue
+        8: Print SCRUM notes
+        9: Quit
         """
 
     def __init__(self, notes_facade, tasks_facade, dml):
@@ -30,9 +31,10 @@ class InterfaceTM:
             "3": self.__print_notes,
             "4": self.__print_tasks,
             "5": self.__complete_task,
-            "6": self.__print_overdue,
-            "7": self.__print_scrum_notes,
-            "8": functools.partial(interface_common.quit_program, self.notes_facade),
+            "6": self.__void_task,
+            "7": self.__print_overdue,
+            "8": self.__print_scrum_notes,
+            "9": functools.partial(interface_common.quit_program, self.notes_facade),
         }
 
     def run_menu_loop_tm(self):
@@ -122,6 +124,41 @@ class InterfaceTM:
             interface_common.clear_screen()
         else:
             self.__complete_task(False)
+
+    def __void_task(self, first_run=True):
+        interface_common.clear_screen()
+        print("0 to cancel\n")
+        if first_run:
+            task_input = input("Enter space delimited task IDs for voiding task: ")
+        else:
+            task_input = input("One or more task IDs not found. Please try again: ")
+
+        task_ids = self.__split_tasks(task_input)
+
+        if task_ids[0] == "0":
+            interface_common.clear_screen()
+            self.run_menu_loop_tm()
+        elif InterfaceTM.are_valid_tasks(task_ids, self.tasks_facade.get_ids()):
+            for task_id in task_ids:
+                if self.tasks_facade.check_if_not_voided(task_id):
+                    task = self.dml.arbitrary_select(
+                        "task", "tasks", f"id = {task_id}"
+                    )[0][0]
+                    self.tasks_facade.void_task(task_id)
+                    self.notes_facade.insert_note(
+                        "Voided Task " + task_id + ": " + task
+                    )
+                else:
+                    print(
+                        f"You have already Voided this task with task id - {task_id}"
+                    )
+                    print("please wait !!")
+                    time.sleep(3)
+                    self.__void_task(False)
+
+            interface_common.clear_screen()
+        else:
+            self.__void_task(False)
 
     @staticmethod
     def are_valid_tasks(tasks_to_complete, valid_task_ids):
