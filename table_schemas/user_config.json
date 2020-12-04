@@ -1,0 +1,6 @@
+{
+    "id": "int",
+    "event_type": "text",
+    "user_name" : "text",
+    "startup_message" : "text"
+}
