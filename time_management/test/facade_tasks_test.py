@@ -13,7 +13,7 @@ class NotesFacadeTest(unittest.TestCase):
         self.data_def.create_table(
             "tasks",
             ddl.DataDefinitionLanguage.parse_json(
-                "time_management/table_schemas/tasks.json"
+                "table_schemas/tasks.json"
             ),
         )
         self.notes_facade = facade_tasks.TasksFacade(self.db)
