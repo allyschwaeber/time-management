@@ -60,6 +60,12 @@ class TasksFacade(facade_abc.AbcFacade):
         )
         self.db.get_connection().commit()
 
+    def void_task(self, row_id):
+        self.db.get_cursor().execute(
+            f"UPDATE {self.table_name} SET is_void = 'true' WHERE id = {row_id}"
+        )
+        self.db.get_connection().commit()
+
     def get_overdue_tasks(self):
         rows = []
         for row in self.get_rows():

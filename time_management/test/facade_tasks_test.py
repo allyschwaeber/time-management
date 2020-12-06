@@ -19,12 +19,13 @@ class NotesFacadeTest(unittest.TestCase):
         self.notes_facade = facade_tasks.TasksFacade(self.db)
         self.notes_facade.insert_task("DO THIS", 1)
         self.notes_facade.insert_task("DO THAT", 2)
+        self.notes_facade.insert_task("VOID THIS", 3)
 
     def tearDown(self) -> None:
         self.db.disconnect()
 
     def test_count_rows(self):
-        self.assertEqual(2, self.notes_facade.count_rows())
+        self.assertEqual(3, self.notes_facade.count_rows())
 
     def test_get_ids(self):
         self.assertTrue(1 in self.notes_facade.get_ids())
@@ -44,3 +45,13 @@ class NotesFacadeTest(unittest.TestCase):
         row_index = 1
         is_complete_index = 6
         self.assertEqual("true", rows[row_index][is_complete_index])
+
+    def test_void_task(self):
+        rows = self.notes_facade.get_rows()
+        row_index = 2
+        is_void_index = 7
+        self.assertEqual("false", rows[row_index][is_void_index])
+        self.notes_facade.void_task(3)
+        rows = self.notes_facade.get_rows()
+        self.assertEqual("true", rows[row_index][is_void_index])
+
