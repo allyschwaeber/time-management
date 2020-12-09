@@ -17,7 +17,7 @@ class InterfaceAnalytics:
         self.__menu_map = {
             "0": interface_common.to_previous_menu,
             "1": interface_common.clear_screen,
-            "2": functools.partial(interface_common.quit_programself.notes_facade)),
+            "2": functools.partial(interface_common.quit_program,self.notes_facade),
         }
 
     def prompt_analytics(self):
