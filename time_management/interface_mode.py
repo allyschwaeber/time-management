@@ -33,11 +33,10 @@ class InterfaceMode:
             self.notes_facade, self.tasks_facade
         )
         self.__menu_map = {
-            "1": (interface_common.initialize_menu(self.interface_tm.run_menu_loop_tm), self.interface_tm.run_menu_loop_tm),
-            "2": interface_common.initialize_menu(self.interface_lytics.run_menu_loop_analytics),
-            "3": interface_common.initialize_menu(self.interface_maint.run_menu_loop_maintenance),
-            "4": functools.partial(interface_common.quit_program, self.notes_facade),
-
+            "1": functools.partial(interface_common.initialize_menu,self.interface_tm.run_menu_loop_tm),
+            "2": functools.partial(interface_common.initialize_menu,self.interface_lytics.run_menu_loop_analytics),
+            "3": functools.partial(interface_common.initialize_menu,self.interface_maint.run_menu_loop_maintenance),
+            "4": functools.partial(interface_common.quit_program,self.notes_facade)
         }
 
     def prompt_mode(self):
@@ -50,4 +49,3 @@ class InterfaceMode:
         while True:
             choice = self.prompt_mode()
             interface_common.map_choice_to_function(self.__menu_map, choice)
-
