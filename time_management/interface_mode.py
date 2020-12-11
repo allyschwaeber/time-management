@@ -33,10 +33,10 @@ class InterfaceMode:
             self.notes_facade, self.tasks_facade
         )
         self.__menu_map = {
-            "1": functools.partial(interface_common.initialize_menu,self.interface_tm.run_menu_loop_tm),
-            "2": functools.partial(interface_common.initialize_menu,self.interface_lytics.run_menu_loop_analytics),
-            "3": functools.partial(interface_common.initialize_menu,self.interface_maint.run_menu_loop_maintenance),
-            "4": functools.partial(interface_common.quit_program,self.notes_facade)
+            "1": self.start_tm_menu_loop,
+            "2": self.start_lytics_menu_loop,
+            "3": self.start_maint_menu_loop,
+            "4": functools.partial(interface_common.quit_program, self.notes_facade)
         }
 
     def prompt_mode(self):
@@ -49,3 +49,21 @@ class InterfaceMode:
         while True:
             choice = self.prompt_mode()
             interface_common.map_choice_to_function(self.__menu_map, choice)
+
+    def start_tm_menu_loop(self):
+        interface_common.initialize_menu(
+            self.interface_tm.run_menu_loop_tm
+        )
+        self.interface_tm.run_menu_loop_tm()
+    
+    def start_lytics_menu_loop(self):
+        interface_common.initialize_menu(
+            self.interface_lytics.run_menu_loop_analytics
+        )
+        self.interface_lytics.run_menu_loop_analytics()
+    
+    def start_maint_menu_loop(self):
+        interface_common.initialize_menu(
+            self.interface_maint.run_menu_loop_maintenance
+        )
+        self.interface_maint.run_menu_loop_maintenance()
