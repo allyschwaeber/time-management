@@ -56,13 +56,16 @@ class TasksFacade(facade_abc.AbcFacade):
     def complete_task(self, row_id):
         now = kronos.get_date_time_as_string()
         self.db.get_cursor().execute(
-            f"UPDATE {self.table_name} SET is_complete = 'true', date_complete = '{now}' WHERE id = {row_id}"
+            f"UPDATE {self.table_name} "
+            f"SET is_complete = 'true', date_complete = '{now}'"
+            f"WHERE id = {row_id}"
         )
         self.db.get_connection().commit()
 
     def void_task(self, row_id):
         self.db.get_cursor().execute(
-            f"UPDATE {self.table_name} SET is_void = 'true' WHERE id = {row_id}"
+            f"UPDATE {self.table_name} SET is_void = 'true' "
+            f"WHERE id = {row_id}"
         )
         self.db.get_connection().commit()
 
@@ -80,7 +83,8 @@ class TasksFacade(facade_abc.AbcFacade):
     def insert_task(self, task, days_to_complete):
         TasksFacade.increment_row_count()
         self.db.get_cursor().execute(
-            "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) VALUES (?, ?, ?, ?, ?, ?, ?, ?)".format(
+            "INSERT INTO {} ({}, {}, {}, {}, {}, {}, {}, {}) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)".format(
                 self.table_name, *self.schema
             ),
             (
