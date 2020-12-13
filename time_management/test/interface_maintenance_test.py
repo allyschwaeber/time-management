@@ -18,7 +18,7 @@ class MaintenanceTest(unittest.TestCase):
         self.data_def.create_table(
             "notes",
             ddl.DataDefinitionLanguage.parse_json(
-                "table_schemas/notes.json"
+                "time_management/table_schemas/notes.json"
             ),
         )
         self.notes_facade = facade_notes.NotesFacade(self.db)
