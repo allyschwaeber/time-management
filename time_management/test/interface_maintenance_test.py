@@ -33,7 +33,7 @@ class MaintenanceTest(unittest.TestCase):
         self.db.disconnect()
 
     def testSelector(self):
-        print(self.interface_tm.menu_map)
+        print(self.interface_tm.__menu_map)
         self.assertEqual(
             1, 1
         )
