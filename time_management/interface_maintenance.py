@@ -27,7 +27,9 @@ class InterfaceMaintenance:
 
     def prompt_maintenance(self):
         banner = os.path.join(os.path.dirname(__file__), "banners/maint.txt")
-        interface_common.print_ascii_banner(interface_common.parse_ascii_banner(banner))
+        interface_common.print_ascii_banner(
+                            interface_common.parse_ascii_banner(banner)
+                        )
         return input(textwrap.dedent(InterfaceMaintenance.__menu))
 
     def run_menu_loop_maintenance(self):
@@ -38,7 +40,8 @@ class InterfaceMaintenance:
     def delete_history(self):
         interface_common.clear_screen()
         choice = input(
-            "Are you sure you want to delete your history?\nSubmit 'y' to drop table\nSubmit 'n' to return to maintenance\n"
+            "Are you sure you want to delete your history?\n \
+            Submit 'y' to drop table\nSubmit 'n' to return to maintenance\n"
         )
         if choice == "y":
             print("\nDeleting history...\n\n")
