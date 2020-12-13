@@ -24,7 +24,9 @@ class InterfaceMode:
         self.notes_facade = facade_notes.NotesFacade(db)
         self.tasks_facade = facade_tasks.TasksFacade(db)
         self.interface_tm = interface_time_management.InterfaceTM(
-            self.notes_facade, self.tasks_facade, dml.DataManipulationLanguage(db)
+            self.notes_facade,
+            self.tasks_facade,
+            dml.DataManipulationLanguage(db)
         )
         self.interface_maint = interface_maintenance.InterfaceMaintenance(
             self.notes_facade, self.tasks_facade, self.data_def
@@ -36,13 +38,18 @@ class InterfaceMode:
             "1": self.start_tm_menu_loop,
             "2": self.start_lytics_menu_loop,
             "3": self.start_maint_menu_loop,
-            "4": functools.partial(interface_common.quit_program, self.notes_facade)
+            "4": functools.partial(
+                    interface_common.quit_program,
+                    self.notes_facade
+                )
         }
 
     def prompt_mode(self):
         interface_common.initialize_menu(self.run_menu_loop_mode, True)
         banner = os.path.join(os.path.dirname(__file__), "banners/mode.txt")
-        interface_common.print_ascii_banner(interface_common.parse_ascii_banner(banner))
+        interface_common.print_ascii_banner(
+                            interface_common.parse_ascii_banner(banner)
+                        )
         return input(textwrap.dedent(InterfaceMode.__menu))
 
     def run_menu_loop_mode(self):
@@ -55,13 +62,13 @@ class InterfaceMode:
             self.interface_tm.run_menu_loop_tm
         )
         self.interface_tm.run_menu_loop_tm()
-    
+
     def start_lytics_menu_loop(self):
         interface_common.initialize_menu(
             self.interface_lytics.run_menu_loop_analytics
         )
         self.interface_lytics.run_menu_loop_analytics()
-    
+
     def start_maint_menu_loop(self):
         interface_common.initialize_menu(
             self.interface_maint.run_menu_loop_maintenance
