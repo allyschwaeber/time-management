@@ -56,9 +56,8 @@ class TasksFacade(facade_abc.AbcFacade):
     def complete_task(self, row_id):
         now = kronos.get_date_time_as_string()
         self.db.get_cursor().execute(
-            f"UPDATE {self.table_name} "
-            f"SET is_complete = 'true', date_complete = '{now}'"
-            f"WHERE id = {row_id}"
+            f"UPDATE {self.table_name} SET is_complete = 'true', "
+            f"date_complete = '{now}' WHERE id = {row_id}"
         )
         self.db.get_connection().commit()
 
