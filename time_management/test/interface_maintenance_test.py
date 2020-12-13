@@ -12,7 +12,7 @@ class MaintenanceTest(unittest.TestCase):
         self.data_def.create_table(
             "tasks",
             ddl.DataDefinitionLanguage.parse_json(
-                "table_schemas/tasks.json"
+                "time_management/table_schemas/tasks.json"
             ),
         )
         self.data_def.create_table(
