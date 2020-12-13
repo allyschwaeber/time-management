@@ -20,7 +20,9 @@ class InterfaceMaintenance:
         self.__menu_map = {
             "0": interface_common.to_previous_menu,
             "1": self.delete_history,
-            "2": functools.partial(interface_common.quit_program, self.notes_facade),
+            "2": functools.partial(
+                interface_common.quit_program, self.notes_facade
+                ),
         }
 
     def prompt_maintenance(self):
